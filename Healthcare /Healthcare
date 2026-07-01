@@ -1,0 +1,72 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+data = pd.read_csv("healthcare_dataset.csv")
+
+print("First 5 Records")
+print(data.head())
+
+print("\nDataset Information")
+print(data.info())
+
+print("\nStatistical Summary")
+print(data.describe())
+
+print("\nMissing Values")
+print(data.isnull().sum())
+
+data = data.dropna()
+
+plt.figure(figsize=(7,5))
+sns.countplot(x="Gender", data=data)
+plt.title("Gender Distribution")
+plt.show()
+
+plt.figure(figsize=(8,5))
+sns.histplot(data["Age"], bins=15, kde=True)
+plt.title("Age Distribution")
+plt.xlabel("Age")
+plt.show()
+
+plt.figure(figsize=(8,5))
+sns.countplot(y="Medical Condition", data=data)
+plt.title("Medical Condition Distribution")
+plt.show()
+
+plt.figure(figsize=(8,5))
+sns.countplot(x="Blood Type", data=data)
+plt.title("Blood Type Distribution")
+plt.show()
+
+plt.figure(figsize=(10,5))
+sns.countplot(y="Doctor", data=data, order=data["Doctor"].value_counts().head(10).index)
+plt.title("Top 10 Doctors")
+plt.show()
+
+plt.figure(figsize=(8,5))
+sns.countplot(y="Hospital", data=data, order=data["Hospital"].value_counts().head(10).index)
+plt.title("Top 10 Hospitals")
+plt.show()
+
+plt.figure(figsize=(8,5))
+sns.countplot(x="Admission Type", data=data)
+plt.title("Admission Type")
+plt.show()
+
+plt.figure(figsize=(8,5))
+sns.histplot(data["Billing Amount"], bins=20, kde=True)
+plt.title("Billing Amount Distribution")
+plt.xlabel("Billing Amount")
+plt.show()
+
+numeric_data = data.select_dtypes(include=["number"])
+
+plt.figure(figsize=(8,6))
+sns.heatmap(numeric_data.corr(), annot=True, cmap="coolwarm")
+plt.title("Correlation Heatmap")
+plt.show()
+
+data.to_csv("cleaned_healthcare_dataset.csv", index=False)
+
+print("\nAnalysis Completed Successfully")
